@@ -1,122 +1,60 @@
 # 🚀 SQL Data Warehouse Project
 
-A modern **Data Warehouse and Analytics** solution built using **SQL Server**, following the Medallion Architecture (**Bronze → Silver → Gold**) to transform raw CRM and ERP data into analytics-ready business models.
+A comprehensive **SQL Server Data Warehouse** project built using the **Medallion Architecture (Bronze → Silver → Gold)**. This project demonstrates how raw CRM and ERP data can be transformed into a clean, integrated, and analytics-ready data warehouse using industry-standard ETL practices.
 
-This project demonstrates industry-standard **ETL development, data modeling, data cleansing, and analytical reporting** using SQL Server.
-
----
-
-## 📖 Project Overview
-
-The objective of this project is to build a scalable and maintainable Data Warehouse capable of integrating data from multiple operational systems and transforming it into meaningful business insights.
-
-The project covers:
-
-- Data Ingestion
-- Data Cleaning & Standardization
-- Data Transformation
-- Data Modeling
-- ETL Automation using Stored Procedures
-- Analytics-ready Star Schema
+The Gold layer is designed using a **Snowflake Schema**, providing a normalized dimensional model that improves data consistency, reduces redundancy, and supports scalable business analytics.
 
 ---
 
-## 🏗️ Data Warehouse Architecture
+## 📌 Project Overview
+
+Organizations often receive data from multiple operational systems in different formats, making reporting and analytics challenging. This project addresses that problem by building a centralized Data Warehouse that integrates CRM and ERP data into a single source of truth.
+
+The project includes:
+
+- Raw data ingestion from multiple source systems
+- Data cleansing and transformation
+- Business rule implementation
+- Data quality validation
+- Snowflake schema dimensional modeling
+- Automated ETL using SQL Server Stored Procedures
+- Analytics-ready datasets for Business Intelligence tools
+
+---
+
+# 🏗️ Data Warehouse Architecture
 
 ```
-                Source Systems
-          ┌─────────────────────┐
-          │     CRM System      │
-          │     ERP System      │
-          └─────────┬───────────┘
-                    │
-                    ▼
-          ┌─────────────────────┐
-          │   Bronze Layer      │
-          │ Raw Data Ingestion  │
-          └─────────┬───────────┘
-                    │
-                    ▼
-          ┌─────────────────────┐
-          │   Silver Layer      │
-          │ Data Cleaning &     │
-          │ Business Rules      │
-          └─────────┬───────────┘
-                    │
-                    ▼
-          ┌─────────────────────┐
-          │    Gold Layer       │
-          │ Star Schema &       │
-          │ Analytics Views     │
-          └─────────────────────┘
+                   Source Systems
+          ┌──────────────────────────┐
+          │        CRM System        │
+          │        ERP System        │
+          └─────────────┬────────────┘
+                        │
+                        ▼
+                ┌─────────────────┐
+                │ Bronze Layer    │
+                │ Raw Data        │
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │ Silver Layer    │
+                │ Clean &         │
+                │ Transform Data  │
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │ Gold Layer      │
+                │ Snowflake       │
+                │ Schema          │
+                └────────┬────────┘
+                         │
+                         ▼
+              Business Intelligence
+          Power BI • Tableau • Excel
 ```
-
----
-
-# 🥉 Bronze Layer
-
-The Bronze Layer stores raw data exactly as received from the source systems.
-
-### Source Systems
-
-### CRM
-- Customer Information
-- Product Information
-- Sales Details
-
-### ERP
-- Customer Data
-- Location Data
-- Product Category Data
-
-### Tasks Performed
-
-- Bulk Load CSV Files
-- Preserve Raw Data
-- No Transformations
-- Maintain Source Integrity
-
----
-
-# 🥈 Silver Layer
-
-The Silver Layer performs data cleansing and standardization.
-
-### Data Quality Operations
-
-- Remove Duplicate Records
-- Handle NULL Values
-- Trim Whitespaces
-- Standardize Date Formats
-- Standardize Gender Values
-- Convert Marital Status Codes
-- Remove Invalid Records
-- Apply Business Rules
-
-This layer prepares clean and reliable data for analytical processing.
-
----
-
-# 🥇 Gold Layer
-
-The Gold Layer contains business-ready analytical tables designed using a **Star Schema**.
-
-### Fact Table
-
-- Fact Sales
-
-### Dimension Tables
-
-- Dimension Customers
-- Dimension Products
-
-The Gold Layer is optimized for:
-
-- Reporting
-- Dashboards
-- Business Intelligence
-- Analytics
-- KPI Calculations
 
 ---
 
@@ -143,153 +81,283 @@ SQL-DATA-WAREHOUSE
 
 ---
 
-# ⚙️ ETL Workflow
+# 🥉 Bronze Layer
+
+The Bronze Layer serves as the raw landing zone where data is loaded exactly as received from the source systems.
+
+### Data Sources
+
+### CRM
+
+- Customer Information
+- Product Information
+- Sales Details
+
+### ERP
+
+- Customer Data
+- Product Categories
+- Location Data
+
+### Operations Performed
+
+- Bulk loading CSV files
+- Preserve original data
+- No transformations
+- Source-level storage
+- Foundation for downstream processing
+
+---
+
+# 🥈 Silver Layer
+
+The Silver Layer focuses on improving data quality by cleaning, validating, and standardizing the raw data.
+
+### Data Quality Transformations
+
+- Remove duplicate records
+- Handle NULL values
+- Trim leading and trailing spaces
+- Standardize text values
+- Convert business codes into meaningful values
+- Validate dates
+- Remove invalid records
+- Apply business rules
+- Standardize naming conventions
+
+This layer produces reliable and consistent datasets for analytical modeling.
+
+---
+
+# 🥇 Gold Layer
+
+The Gold Layer contains analytics-ready business models organized using a **Snowflake Schema**.
+
+Unlike a traditional Star Schema, the Snowflake Schema normalizes dimension tables into multiple related tables, improving data consistency while minimizing redundancy.
+
+The Gold Layer is designed for:
+
+- Business Intelligence
+- Reporting
+- Dashboard Development
+- KPI Analysis
+- Decision Support
+- Ad-hoc Analytics
+
+---
+
+# ❄️ Snowflake Schema
+
+```
+                  Dim Category
+                       │
+                       │
+                Dim Product
+                       │
+                       │
+             ┌─────────┴─────────┐
+             │                   │
+        Fact Sales         Dim Customer
+                                   │
+                                   │
+                            Dim Geography
+```
+
+The normalized design helps maintain data integrity and supports scalable analytical workloads.
+
+---
+
+# 🔄 ETL Workflow
 
 ```
 CSV Files
      │
      ▼
 Bronze Layer
-(Raw Ingestion)
+(Raw Data)
      │
      ▼
 Silver Layer
-(Cleaning &
+(Data Cleaning &
 Transformation)
      │
      ▼
 Gold Layer
-(Data Modeling)
+(Snowflake Schema)
      │
      ▼
-Analytics &
-Reporting
+Business Analytics
 ```
 
 ---
 
-# 🛠️ Technologies Used
+# ⚙️ Technologies Used
 
-- Microsoft SQL Server
-- SQL Server Management Studio (SSMS)
-- T-SQL
-- Stored Procedures
-- Bulk Insert
-- Views
-- Star Schema
-- ETL Development
-- Data Warehousing
+| Category | Technologies |
+|----------|--------------|
+| Database | Microsoft SQL Server |
+| Language | T-SQL |
+| ETL | SQL Stored Procedures |
+| Data Loading | BULK INSERT |
+| Data Modeling | Snowflake Schema |
+| Query Objects | Views |
+| Development Tool | SQL Server Management Studio (SSMS) |
+| Version Control | Git & GitHub |
 
 ---
 
-# 📊 Features
+# ✨ Features
 
-✔ Automated ETL Pipeline
-
-✔ Medallion Architecture
-
-✔ Data Cleaning
-
-✔ Data Validation
-
-✔ Data Standardization
-
-✔ Star Schema Design
-
-✔ Fact & Dimension Modeling
-
-✔ SQL Stored Procedures
-
-✔ Analytics-ready Data Model
+- Medallion Architecture (Bronze → Silver → Gold)
+- Automated ETL Pipeline
+- Bulk Data Loading
+- SQL Stored Procedures
+- Data Cleaning & Validation
+- Data Standardization
+- Snowflake Schema Modeling
+- Business Rule Implementation
+- Analytics-ready Data Warehouse
+- Modular SQL Scripts
+- Scalable Warehouse Design
 
 ---
 
 # 📈 Business Benefits
 
-This Data Warehouse enables:
+This project enables organizations to:
 
-- Faster Reporting
-- Improved Data Quality
-- Single Source of Truth
-- Better Business Decision Making
-- Scalable ETL Process
-- Easy Integration with Power BI and Tableau
-
----
-
-# 📸 Sample Workflow
-
-```
-CRM + ERP Data
-        │
-        ▼
-Bronze
-        │
-        ▼
-Silver
-        │
-        ▼
-Gold
-        │
-        ▼
-Power BI
-Excel
-Tableau
-Analytics
-```
+- Build a centralized source of truth
+- Improve data quality
+- Eliminate duplicate and inconsistent records
+- Accelerate reporting
+- Support Business Intelligence initiatives
+- Enable scalable analytics
+- Improve business decision-making
 
 ---
 
-# 🚀 How to Run
+# 🚀 Getting Started
 
-### 1 Clone Repository
+## Prerequisites
+
+- Microsoft SQL Server
+- SQL Server Management Studio (SSMS)
+- Git
+
+---
+
+## Clone the Repository
 
 ```bash
 git clone https://github.com/rahulpoojith/SQL-DATA-WAREHOUSE.git
 ```
 
-### 2 Open SQL Server Management Studio
+---
 
-Connect to your SQL Server instance.
+## Create the Database
 
-### 3 Create Database
+Execute the database creation scripts.
 
-Run the database creation script.
+---
 
-### 4 Load Bronze Layer
+## Load Bronze Layer
 
-Execute:
+Run the Bronze ETL procedure.
 
-```
-bronze.load_bronze
-```
-
-### 5 Load Silver Layer
-
-Execute:
-
-```
-silver.load_silver
+```sql
+EXEC bronze.load_bronze;
 ```
 
-### 6 Build Gold Layer
+---
 
-Run the Gold Layer scripts to create dimensions and fact tables.
+## Load Silver Layer
+
+Run the Silver ETL procedure.
+
+```sql
+EXEC silver.load_silver;
+```
+
+---
+
+## Build the Gold Layer
+
+Execute the Gold layer scripts to create the Snowflake Schema and analytical views.
+
+---
+
+# 📊 ETL Flow
+
+```
+Raw CSV Files
+      │
+      ▼
+Bronze Layer
+      │
+      ▼
+Data Cleaning
+      │
+      ▼
+Silver Layer
+      │
+      ▼
+Business Rules
+      │
+      ▼
+Gold Layer
+      │
+      ▼
+Snowflake Schema
+      │
+      ▼
+Reporting & Analytics
+```
+
+---
+
+# 🎯 Skills Demonstrated
+
+- SQL Server Development
+- T-SQL Programming
+- ETL Pipeline Development
+- Data Warehousing
+- Data Cleaning
+- Data Transformation
+- Data Validation
+- Snowflake Schema Design
+- Stored Procedure Development
+- Bulk Data Loading
+- Dimensional Modeling
+- Query Optimization
+- Business Intelligence Fundamentals
 
 ---
 
 # 📚 Learning Outcomes
 
-Through this project, I gained hands-on experience in:
+Through this project, I gained practical experience in:
 
-- Data Warehouse Design
-- SQL Server ETL Development
-- Data Cleansing Techniques
-- Star Schema Modeling
-- Stored Procedure Development
-- Data Validation
-- SQL Performance Optimization
-- Business Intelligence Foundations
+- Designing enterprise Data Warehouses
+- Building Medallion Architecture
+- Developing ETL pipelines
+- Writing reusable Stored Procedures
+- Cleaning and transforming large datasets
+- Implementing Snowflake Schema models
+- Applying dimensional modeling concepts
+- Preparing analytics-ready datasets
+
+---
+
+# 🔮 Future Enhancements
+
+- Incremental Data Loading
+- Change Data Capture (CDC)
+- Slowly Changing Dimensions (SCD Type 2)
+- SQL Server Agent Job Automation
+- Performance Tuning
+- Power BI Dashboard Integration
+- Data Quality Monitoring
+- ETL Logging and Error Handling
 
 ---
 
@@ -299,12 +367,20 @@ Through this project, I gained hands-on experience in:
 
 Data Analyst | SQL Developer | Aspiring Data Engineer
 
-GitHub: https://github.com/rahulpoojith
+**GitHub:** https://github.com/rahulpoojith
 
-LinkedIn: *(Add your LinkedIn profile here)*
+> Feel free to connect, provide feedback, or contribute to the project.
 
 ---
 
-# ⭐ If you found this project helpful
+# ⭐ Support
 
-Give this repository a ⭐ and feel free to fork it!
+If you found this project helpful, please consider giving it a **⭐ Star** on GitHub.
+
+It helps others discover the project and motivates future improvements.
+
+---
+
+## 📄 License
+
+This project is intended for educational and portfolio purposes. Feel free to fork, learn from, and build upon it with appropriate attribution.
